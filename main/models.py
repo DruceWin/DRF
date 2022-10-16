@@ -8,6 +8,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    slug = models.SlugField(unique=True)
 
     def __str__(self):
         return self.title

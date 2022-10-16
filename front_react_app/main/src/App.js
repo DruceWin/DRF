@@ -1,17 +1,19 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 
 const List = (props) => {
   const { prod } = props;
-  if (!prod || prod.length === 0) return <p>No repos, sorry</p>;
+  if (!prod || prod.length === 0) return <p>No products, sorry</p>;
   return (
     <ul>
       <h2 className='list-head'>Available Products</h2>
       {prod.map((pr) => {
         return (
           <li key={pr.id} className='list'>
-            <span className='repo-text'>{pr.title} </span>
-            <span className='repo-description'>{pr.description}</span>
+            <span className='prod-text'>{pr.title}. </span>
+            <span className='prod-description'> Описание: {pr.description}.</span>
+            <span className='prod-price'> Цена: {pr.price} руб.</span>
+            {/*<span className='repo-category'> Категория: {pr.category_set}.</span>*/}
           </li>
         );
       })}
@@ -36,10 +38,29 @@ function App() {
     loading: false,
     repos: null,
   });
-
+  const [Product, setProduct] = useState(
+    'Нажми кнопку для получения продуктов')
+  const [Category, setCategory] = useState(
+      'Нажми кнопку для получения категорий')
+  function get_products(){
+    fetch('http://127.0.0.1:8000/api/product')
+        .then((res) => res.json())
+        .then(products=>{
+          console.log(products)
+            setProduct(products)
+        })
+  }
+  function get_categories(){
+    fetch('http://127.0.0.1:8000/api/categories')
+        .then((res) => res.json())
+        .then(categories=>{
+          console.log(categories)
+            setCategory(categories)
+        })
+  }
   useEffect(() => {
     setAppState({ loading: true });
-    const apiUrl = `http://127.0.0.1:8000/api/product/?format=json`;
+    const apiUrl = `http://127.0.0.1:8000/api/product`;
     fetch(apiUrl)
       .then((res) => res.json())
       .then((prod) => {
@@ -49,7 +70,17 @@ function App() {
   return (
     <div className='App'>
       <div className='container'>
-        <h1>My Repositories</h1>
+        <h1>My API</h1>
+      </div>
+        <input type="button" value={'получить продукты'} onClick={get_products}/>
+        <input type="button" value={'получить категории'} onClick={get_categories}/>
+      <div className="wrapper">
+          {/*<div className="products">*/}
+          {/*    {Product.map((pr) => <p>({pr.title}</p>)}*/}
+          {/*</div>*/}
+          <div className="categories">
+
+          </div>
       </div>
       <div className='repo-container'>
         <ListLoading isLoading={appState.loading} prod={appState.prod} />

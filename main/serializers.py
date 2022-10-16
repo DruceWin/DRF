@@ -13,6 +13,7 @@ class ProductSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=500)
     price = serializers.DecimalField(max_digits=8, decimal_places=2)
     category = CategorySerializer()
+    slug = serializers.SlugField()
 
 
 class ProductSerializerPOST(serializers.Serializer):
@@ -20,6 +21,7 @@ class ProductSerializerPOST(serializers.Serializer):
     description = serializers.CharField(max_length=500)
     price = serializers.DecimalField(max_digits=8, decimal_places=2)
     category_id = serializers.IntegerField()
+    slug = serializers.SlugField()
 
     def create(self, validated_data):
         return Product.objects.create(**validated_data)
