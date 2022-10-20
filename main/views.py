@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -27,3 +27,9 @@ def get_categories(request):
     categories = Category.objects.all()
     categories_serializer = CategorySerializer2(categories, many=True)
     return Response(categories_serializer.data)
+
+@api_view()
+def get_product_for_title(request, text):
+    product = get_object_or_404(Product, title=text)
+    serializer = ProductSerializer(product)
+    return Response(serializer.data)

@@ -38,26 +38,44 @@ function App() {
     loading: false,
     repos: null,
   });
-  const [Product, setProduct] = useState(
-    'Нажми кнопку для получения продуктов')
-  const [Category, setCategory] = useState(
-      'Нажми кнопку для получения категорий')
+  const [product, setProduct] = useState(
+      [{title:'najmi po prodyctam'}])
+  const [category, setCategory] = useState(
+      [{name:'najmi po kategoriyam'}])
+  const [product_text, setProductText] = useState('a')
+  const [product_title, setProductTitle] = useState({"title":''})
   function get_products(){
-    fetch('http://127.0.0.1:8000/api/product')
+    fetch('http://127.0.0.1:8000/api/product/')
         .then((res) => res.json())
         .then(products=>{
-          console.log(products)
             setProduct(products)
+            console.log(products)
+            console.log(product)
         })
   }
   function get_categories(){
-    fetch('http://127.0.0.1:8000/api/categories')
+    fetch('http://127.0.0.1:8000/api/categories/')
         .then((res) => res.json())
         .then(categories=>{
-          console.log(categories)
             setCategory(categories)
         })
   }
+
+  function set_input_value_for_product_text(p){
+      setProductText(p.target.value)
+  }
+
+  function get_product_for_text(){
+      fetch(`http://127.0.0.1:8000/api/product/${product_text}`)
+        .then((res) => res.json())
+        .then(product=>{
+            if (!product.title){
+                setProductTitle({title: "net takogo producta"})
+            }
+            else {setProductTitle(product)}
+        })
+  }
+
   useEffect(() => {
     setAppState({ loading: true });
     const apiUrl = `http://127.0.0.1:8000/api/product`;
@@ -74,12 +92,25 @@ function App() {
       </div>
         <input type="button" value={'получить продукты'} onClick={get_products}/>
         <input type="button" value={'получить категории'} onClick={get_categories}/>
-      <div className="wrapper">
-          {/*<div className="products">*/}
-          {/*    {Product.map((pr) => <p>({pr.title}</p>)}*/}
-          {/*</div>*/}
-          <div className="categories">
-
+      <div className="wrapper" style={{display:"flex"}}>
+          <div className="products" style={{margin:"15px"}}>
+              {product.map((item, i) => <p key={i}>{item.title}</p>)}
+          </div>
+          <div className="categories" style={{margin:"15px"}}>
+              {category.map((item, i) => <p key={i}>{item.name}</p>)}
+          </div>
+      </div>
+      <div>
+          <form action="">
+              <input type="text" placeholder="Введи название продукта" onChange={set_input_value_for_product_text}/>
+              <input type="button" value="OK" onClick={get_product_for_text}/>
+          </form>
+      </div>
+      <div style={{display:"flex", justifyContent:"center", alignContent:"center"}}>
+          <div>
+              <p>{product_title.title}</p>
+              <p>{product_title.description}</p>
+              <p>{product_title.price}</p>
           </div>
       </div>
       <div className='repo-container'>

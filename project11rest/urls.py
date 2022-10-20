@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 
-from main.views import get_product, get_categories
+from main.views import get_product, get_categories, get_product_for_title
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -42,6 +42,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/product/', get_product),
     path('api/categories/', get_categories),
+    path('api/product/<str:text>', get_product_for_title),
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
