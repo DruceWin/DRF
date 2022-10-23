@@ -87,11 +87,12 @@ function App() {
                 }}>
                     {product.map(item =>
                         <div style={{
-                        height: '150px',
-                        width: "150px",
-                        border: '1px solid red',
-                        background: 'goldenrod',
-                        margin: '20px'
+                            height: '150px',
+                            width: "150px",
+                            border: '1px solid red',
+                            background: 'goldenrod',
+                            margin: '20px',
+                            cursor: 'pointer'
                     }}
                              key={item.title}
                              onClick={detail_products}
@@ -156,11 +157,12 @@ function App() {
                 }}>
                     {product_sort.map(item =>
                         <div style={{
-                        height: '150px',
-                        width: "150px",
-                        border: '1px solid red',
-                        background: 'goldenrod',
-                        margin: '20px'
+                            height: '150px',
+                            width: "150px",
+                            border: '1px solid red',
+                            background: 'goldenrod',
+                            margin: '20px',
+                            cursor: 'pointer'
                     }}
                              key={item.title}
                              onClick={detail_products}
