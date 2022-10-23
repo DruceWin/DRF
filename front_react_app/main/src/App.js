@@ -9,17 +9,19 @@ function App() {
         [{name: 'najmi po kategoriyam'}])
     const [product_sort, setProductSort] = useState(
         [{title: ''}])
+    const [product_detail, setProductDetail] = useState(
+        [{title: ''}])
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/categories/')
+        fetch('http://127.0.0.1:8000/api/categories/')
             .then(response => response.json())
             .then(data => {
                 setCategory(data)
             })
     }, [])
-    console.log(category)
+
     useEffect(() => {
-        fetch('http://localhost:8000/api/product/')
+        fetch('http://127.0.0.1:8000/api/product/')
             .then(response => response.json())
             .then(data => {
                 setProduct(data)
@@ -27,7 +29,6 @@ function App() {
     }, [])
 
     function sort_products(e) {
-        console.log(e.target.id)
         let data_sorted = []
         for(let i of product){
             if(i.category.name===e.target.id){
@@ -35,6 +36,20 @@ function App() {
             }
         }
         setProductSort(data_sorted)
+    }
+
+        function detail_products(e) {
+        let data_detail = []
+        for (let i of product){
+            if(i.title===e.target.id){
+                data_detail.push(i)
+            }
+        }
+        setProductDetail(data_detail)
+    }
+
+    function sort_all(){
+        setProductSort([{title: ''}])
     }
 
     if (product_sort[0].title === '') {
@@ -48,7 +63,12 @@ function App() {
                         justifyContent: 'flex-start',
                         background: 'blue'
                     }}>
-                        {category.map(item => <li style={{margin: '20px', color: 'yellow', cursor: 'pointer'}}
+                        {category.map(item =>
+                            <li style={{
+                                margin: '20px',
+                                color: 'yellow',
+                                cursor: 'pointer'
+                            }}
                                                   key={item.name}
                                                   onClick={sort_products}
                                                   id={item.name}>
@@ -61,19 +81,36 @@ function App() {
                     display: 'flex',
                     width: '80%',
                     justifyContent: 'flex-start',
+                    flexWrap: 'wrap',
                     background: 'grey',
                     padding: '20px'
                 }}>
-                    {product.map(item => <div style={{
+                    {product.map(item =>
+                        <div style={{
                         height: '150px',
                         width: "150px",
                         border: '1px solid red',
                         background: 'goldenrod',
                         margin: '20px'
-                    }}>
-                        <p>{item.title}</p><p>{item.price}</p>
+                    }}
+                             key={item.title}
+                             onClick={detail_products}
+                             id={item.title}>
+                            <p id={item.title}>{item.title}</p>
+                            <p id={item.title}>{item.price}</p>
                     </div>)}
                 </main>
+                <div style={{
+                        height: '150px',
+                        width: "150px",
+                        border: '1px solid black',
+                        background: 'yellowgreen',
+                        margin: '20px'
+                    }}>
+                    <p>{product_detail[0].title}</p>
+                    <p>{product_detail[0].price}</p>
+                    <p>{product_detail[0].description}</p>
+                </div>
             </div>
         );
     }
@@ -88,17 +125,24 @@ function App() {
                         justifyContent: 'flex-start',
                         background: 'blue'
                     }}>
-                        {category.map(item => <li style={{
+                        {category.map(item =>
+                            <li style={{
                             margin: '20px',
                             color: 'yellow',
                             cursor: 'pointer'
                         }}
-                                                  key={item.name}
-                                                  onClick={sort_products}
-                                                  id={item.name}>
+                                key={item.name}
+                                onClick={sort_products}
+                                id={item.name}>
                             {item.name}
                         </li>)}
-                        <li>All</li>
+                        <li style={{
+                            margin: '20px',
+                            color: 'yellow',
+                            cursor: 'pointer'
+                        }}
+                            key='all'
+                            onClick={sort_all}>All</li>
                     </ul>
                 </nav>
                 <h3>Продукты</h3>
@@ -106,20 +150,36 @@ function App() {
                     display: 'flex',
                     width: '80%',
                     justifyContent: 'flex-start',
+                    flexWrap: 'wrap',
                     background: 'grey',
                     padding: '20px'
                 }}>
-                    {product_sort.map(item => <div style={{
+                    {product_sort.map(item =>
+                        <div style={{
                         height: '150px',
                         width: "150px",
                         border: '1px solid red',
                         background: 'goldenrod',
                         margin: '20px'
-                    }}>
-                        <p>{item.title}</p>
-                        <p>{item.price}</p>
+                    }}
+                             key={item.title}
+                             onClick={detail_products}
+                             id={item.title}>
+                        <p id={item.title}>{item.title}</p>
+                        <p id={item.title}>{item.price}</p>
                     </div>)}
                 </main>
+                <div style={{
+                        height: '150px',
+                        width: "150px",
+                        border: '1px solid black',
+                        background: 'yellowgreen',
+                        margin: '20px'
+                    }}>
+                    <p>{product_detail[0].title}</p>
+                    <p>{product_detail[0].price}</p>
+                    <p>{product_detail[0].description}</p>
+                </div>
             </div>
         );
     }
