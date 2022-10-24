@@ -9,6 +9,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     slug = models.SlugField(unique=True)
+    shops = models.ManyToManyField('Shop')
 
     def __str__(self):
         return self.title
@@ -20,3 +21,8 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Shop(models.Model):
+    name = models.CharField(max_length=128)
+    slug = models.SlugField(unique=True)
