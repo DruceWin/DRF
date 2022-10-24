@@ -3,11 +3,6 @@ from rest_framework import serializers
 from main.models import Product
 
 
-class ShopSerializer(serializers.Serializer):
-    name = serializers.CharField()
-    slug = serializers.SlugField()
-
-
 class CategorySerializer(serializers.Serializer):
     name = serializers.CharField(max_length=128)
     description = serializers.CharField(max_length=500)
@@ -18,7 +13,6 @@ class ProductSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=500)
     price = serializers.DecimalField(max_digits=8, decimal_places=2)
     category = CategorySerializer()
-    shops = ShopSerializer(many=True)
     slug = serializers.SlugField()
 
 
@@ -45,3 +39,15 @@ class CategorySerializer2(serializers.Serializer):
     # product_set = ProductSerializer2(many=True)
     product_set = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True)
     # product_set = serializers.RelatedField(queryset=Product.objects.all())
+
+
+class ShopsSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+
+
+class ShopSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+    slug = serializers.SlugField()
+    products = ProductSerializer(many=True)
