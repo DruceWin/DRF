@@ -91,5 +91,4 @@ def get_or_post_house(request, pk=None):
         return Response(serializer.data)
     queryset = House.objects.all()
     serializer = HouseSerializer(queryset, many=True)
-    print(serializer.data)
     return Response(serializer.data)
