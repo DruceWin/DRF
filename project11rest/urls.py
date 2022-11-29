@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from appcelery.views import get_page
 from main.views import get_product, get_categories, \
     get_product_for_title, get_shops, get_shop_for_id, \
     ProductViewSet, ShopViewSet, CategoriesViewSet, ProductsApiView
@@ -45,10 +47,15 @@ router.register(r'shops', ShopViewSet, 'shop')
 router.register(r'categories', CategoriesViewSet, 'category')
 
 urlpatterns = [
+    path('chat/', include('chat.urls')),
+    path('', get_page, name='get_page'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),
     # path('api/product/', get_product),
     path('', include(router.urls)),
     path('api/v2/', include('api_new.urls')),
+    path('auto/', include('api_jwt.urls')),
     path('api/products/', ProductsApiView.as_view()),
     # path('api/categories/', get_categories),
     # path('api/shops/', get_shops),
