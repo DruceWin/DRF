@@ -46,10 +46,16 @@ class ChatConsumer(WebsocketConsumer):
         # Send message to WebSocket
         self.send(text_data=json.dumps({"message": message}))
 
-
     # Receive message from room group
     def send_euro(self, event):
         message = event["euro"]
+
+        # Send message to WebSocket
+        self.send(text_data=json.dumps({"message": message}))
+
+    # Receive message from room group
+    def send_value(self, event):
+        message = event["value"]
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({"message": message}))

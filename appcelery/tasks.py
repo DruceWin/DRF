@@ -1,6 +1,7 @@
 import datetime
 
 import channels.layers
+import redis
 import requests
 from asgiref.sync import async_to_sync
 from celery import shared_task
@@ -8,6 +9,8 @@ from django.contrib.auth.models import User
 
 from project11rest.celery import app
 channel_layer = channels.layers.get_channel_layer()
+
+r = redis.Redis()
 
 @app.task()
 def summ():
@@ -20,9 +23,9 @@ def summ():
 def send_to_chat():
     time = f'{datetime.datetime.now()}'
     async_to_sync(channel_layer.group_send)(
-        'chat_123',{
-            'type':'send_time',
-            'time':time
+        'chat_123', {
+            'type': 'send_time',
+            'time': time
         }
     )
     send_euro.apply_async()
@@ -37,3 +40,15 @@ def send_euro():
             'euro': str(euro)
         }
     )
+
+
+@shared_task
+def send_value():
+    value = r.get('value')
+    async_to_sync(channel_layer.group_send)(
+        'chat_123', {
+            'type': 'send_value',
+            'value': str(value)
+        }
+    )
+
